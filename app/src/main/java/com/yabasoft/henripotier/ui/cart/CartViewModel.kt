@@ -32,30 +32,32 @@ class CartViewModel(
     val discount: LiveData<Int>
         get() = _discount
 
-    private val _totalPriceDiscount: MutableLiveData<Int> = MutableLiveData(0)
-    val totalPriceDiscount: LiveData<Int>
-        get() = _totalPriceDiscount
+    private val _totalPriceAfterDiscount: MutableLiveData<Int> = MutableLiveData(0)
+    val totalPriceAfterDiscount: LiveData<Int>
+        get() = _totalPriceAfterDiscount
 
-
-    var isbnList: List<String> = listOf()
 
     init {
         getBooksFromCart()
     }
 
-    private fun getCommercialOffers() = viewModelScope.launch {
-        repository.getCommercialOffers(getIds())
+    // Updated after deadline
+    fun getCommercialOffers(ids: String) = viewModelScope.launch {
+        repository.getCommercialOffers(ids)
             .onStart { emit(NetworkResult.Loading()) }
             .collect { value -> _commercialOffersResponse.value = value }
     }
 
     private fun getBooksFromCart() = viewModelScope.launch {
         repository.getAllBooksInCart()
-            .collect { value -> _cartBooks.value = value }
+            .collect { value ->
+                _cartBooks.value = value
+            }
     }
 
+    // not used after deadline
+    @Deprecated("not used after deadline")
     fun getIsbn() = viewModelScope.launch {
-        isbnList = repository.findAllIsbnCode()
     }
 
     fun getBestOffer() {
@@ -63,16 +65,16 @@ class CartViewModel(
             _totalPrice.value = _cartBooks.value?.let { Utils.calculateTotal(it) }
             _discount.value = _commercialOffersResponse.value?.data?.offers?.let {
                 _totalPrice.value?.let { it1 ->
-                    Utils.calculateMaxOffer(
+                    Utils.calculateMaxReduction(
                         it1,
                         it
                     )
                 }
             }
-            _totalPriceDiscount.value =
+            _totalPriceAfterDiscount.value =
                 _totalPrice.value?.let {
                     _discount.value?.let { it1 ->
-                        Utils.calculateTotalDiscount(
+                        Utils.calculateTotalAfterDiscount(
                             it,
                             it1
                         )
@@ -85,9 +87,29 @@ class CartViewModel(
         repository.delete(book)
     }
 
-    fun getIds(): String {
+    // Updated after deadline
+    fun getIds(books: List<Book>): String {
         var tempString = ""
-        for (id in isbnList) tempString += ",$id"
+        books.map {
+            tempString += ",${it.isbn}"
+        }
+
         return tempString
     }
+
+    //Added after deadline
+    fun setTotalPrice(totalPrice: Int) {
+        _totalPrice.value = totalPrice
+    }
+
+    //Added after deadline
+    fun setDiscount(reduction: Int) {
+        _discount.value = reduction
+    }
+
+    //Added after deadline
+    fun setPriceAfterDiscount(priceAfterDiscount: Int) {
+        _totalPriceAfterDiscount.value = priceAfterDiscount
+    }
+
 }

@@ -3,23 +3,24 @@ package com.yabasoft.henripotier.utils
 import com.yabasoft.henripotier.data.entities.Book
 import com.yabasoft.henripotier.data.entities.Offer
 
-class Utils {
+// Updated after deadline
+object Utils {
 
-    companion object {
-        fun calculateTotal(listBooks: List<Book>): Int {
-            var totalPrice = 0
-            for (item in listBooks) {
-                totalPrice += item.price
-            }
-            return totalPrice
+    fun calculateTotal(listBooks: List<Book>): Int {
+        var totalPrice = 0
+        for (item in listBooks) {
+            totalPrice += item.price
         }
+        return totalPrice
+    }
 
-        fun calculateTotalDiscount(totalPrice: Int, discount: Int): Int {
-            return totalPrice - discount
-        }
+    fun calculateTotalAfterDiscount(totalPrice: Int, discount: Int): Int {
+        return totalPrice - discount
+    }
 
-        fun calculateMaxOffer(totalPrice: Int, offers: List<Offer>): Int {
-            val listOffers: MutableList<Int> = mutableListOf<Int>()
+    fun calculateMaxReduction(totalPrice: Int, offers: List<Offer>?): Int {
+        val listOffers: MutableList<Int> = mutableListOf()
+        if (offers != null) {
             for (offer in offers) {
                 when (offer.type) {
                     "percentage" -> listOffers.add(calculatePercentage(totalPrice, offer.value))
@@ -30,15 +31,16 @@ class Utils {
                     }
                 }
             }
-            return listOffers.max() ?: 0
         }
-
-        fun calculatePercentage(totalPrice: Int, percentage: Int): Int {
-            return totalPrice * percentage / 100
-        }
-
-        fun calculateSlice(totalPrice: Int, offer: Offer): Int {
-            return (totalPrice / offer.sliceValue) * offer.value
-        }
+        return listOffers.maxOrNull() ?: 0
     }
+
+    private fun calculatePercentage(totalPrice: Int, percentage: Int): Int {
+        return totalPrice * percentage / 100
+    }
+
+    private fun calculateSlice(totalPrice: Int, offer: Offer): Int {
+        return (totalPrice / offer.sliceValue) * offer.value
+    }
+
 }

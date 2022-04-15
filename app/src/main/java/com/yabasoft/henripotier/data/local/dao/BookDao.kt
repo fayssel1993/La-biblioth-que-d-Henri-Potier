@@ -12,6 +12,7 @@ interface BookDao {
     @Query("SELECT * FROM books ORDER BY price ASC")
     fun getAll(): Flow<List<Book>>
 
+    @Deprecated("not used after deadline")
     @Query("SELECT isbn FROM books")
     suspend fun findAllIsbnCode(): List<String>
 

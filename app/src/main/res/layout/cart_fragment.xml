@@ -80,7 +80,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{String.format(@string/price_total_with_discount, viewModel.totalPriceDiscount)}" />
+                        android:text="@{String.format(@string/price_total_with_discount, viewModel.totalPriceAfterDiscount)}" />
 
                 </LinearLayout>
 

@@ -37,8 +37,10 @@ class BooksRepository(
 
     suspend fun delete(book: Book) = dao.delete(book)
 
+
     fun getAllBooksInCart() = dao.getAll()
 
+    @Deprecated("not used after deadline")
     suspend fun findAllIsbnCode() = dao.findAllIsbnCode()
 
 }
