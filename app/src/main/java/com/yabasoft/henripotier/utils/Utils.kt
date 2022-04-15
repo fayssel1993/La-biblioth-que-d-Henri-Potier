@@ -1,25 +1,25 @@
-package com.xebia.hpotier.util
+package com.yabasoft.henripotier.utils
 
-import com.xebia.hpotier.data.remote.domain.Offer
-import com.xebia.hpotier.data.room.entity.CartBooks
+import com.yabasoft.henripotier.data.entities.Book
+import com.yabasoft.henripotier.data.entities.Offer
 
-class CalculesUtils {
+class Utils {
 
     companion object {
-        fun calculeTotal(listBooks : List<CartBooks>): Int {
+        fun calculateTotal(listBooks: List<Book>): Int {
             var totalPrice = 0
             for (item in listBooks) {
-                totalPrice = totalPrice + item.price
+                totalPrice += item.price
             }
             return totalPrice
         }
 
-        fun calculeTotalDiscount(totalPrice : Int, discount : Int) : Int {
+        fun calculateTotalDiscount(totalPrice: Int, discount: Int): Int {
             return totalPrice - discount
         }
 
-        fun calculateMaxOffre(totalPrice: Int, offers : List<Offer>) : Int {
-            var listOffers : MutableList<Int> = mutableListOf<Int>()
+        fun calculateMaxOffer(totalPrice: Int, offers: List<Offer>): Int {
+            val listOffers: MutableList<Int> = mutableListOf<Int>()
             for (offer in offers) {
                 when (offer.type) {
                     "percentage" -> listOffers.add(calculatePercentage(totalPrice, offer.value))
@@ -33,12 +33,12 @@ class CalculesUtils {
             return listOffers.max() ?: 0
         }
 
-        fun calculatePercentage(totalPrice : Int, percentage : Int): Int {
+        fun calculatePercentage(totalPrice: Int, percentage: Int): Int {
             return totalPrice * percentage / 100
         }
 
         fun calculateSlice(totalPrice: Int, offer: Offer): Int {
-            return ( totalPrice / offer.sliceValue ) * offer.value
+            return (totalPrice / offer.sliceValue) * offer.value
         }
     }
 }

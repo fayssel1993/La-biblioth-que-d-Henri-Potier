@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Henri Potier</string>
+    <string name="price">%1$d €</string>
+    <string name="no_item">Pas de livre dans le panier</string>
+
+    <string name="price_total">Total du panier : %1$d €</string>
+    <string name="price_discount">Offre commerciale : %1$d €</string>
+    <string name="price_total_with_discount">Prix ​​total après remise: %1$d €</string>
 </resources>

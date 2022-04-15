@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/booksFragment">
 
+    <fragment
+        android:id="@+id/booksFragment"
+        android:name="com.yabasoft.henripotier.ui.books.BooksFragment"
+        android:label="BooksFragment" >
+        <action
+            android:id="@+id/action_booksFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.yabasoft.henripotier.ui.cart.CartFragment"
+        android:label="CartFragment" />
 </navigation>

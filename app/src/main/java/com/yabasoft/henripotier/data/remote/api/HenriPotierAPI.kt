@@ -1,8 +1,8 @@
-package com.yabasoft.henripotier.api
+package com.yabasoft.henripotier.data.remote.api
 
 import com.yabasoft.henripotier.data.entities.Book
 import com.yabasoft.henripotier.data.entities.CommercialOffers
-import io.reactivex.Single
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -10,9 +10,10 @@ import retrofit2.http.Path
  * Created by Fayssel Yabahddou on 4/14/22.
  */
 interface HenriPotierAPI {
+
     @GET("books")
-    fun getAllBooks(): Single<ArrayList<Book>>
+    suspend fun getAllBooks(): Response<List<Book>>
 
     @GET("books/{ids}/commercialOffers")
-    fun getCommercialOffers(@Path("ids") ids: String): Single<CommercialOffers>
+    suspend fun getCommercialOffers(@Path("ids") ids: String): Response<CommercialOffers>
 }
